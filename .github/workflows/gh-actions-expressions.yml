@@ -7,9 +7,12 @@ on:
     branches: 
       - 'express**'
 
+env:
+  run_step: 'true'
+
 jobs:
   Run-Job-Only-On-Push:
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push'  }}
     runs-on: ubuntu-latest
     steps:
       - run: |
@@ -29,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Run Step only on Push'
-        if: ${{ github.event_name == 'push' }}
+        if: ${{ github.event_name == 'push' && env.run_step == 'true' }}
         run: |
          echo "Triggered by PUSH!"
 
