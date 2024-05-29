@@ -1,0 +1,42 @@
+name: GitHub Actions Demo - Pull Requests
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+jobs:
+  Unit-Tests:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: 'Checkout Repo on branch: ${{ github.ref }}'
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.ref }}
+        fetch-depth: 0
+
+    - name: 'Setup Node.js'
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: 'Show NPM and Node Versions'
+      run: |
+        echo "NPM Version"
+        npm --version
+
+        echo "Node Version"
+        node --version
+
+    - name: 'Execute Unit Tests'
+      id: 'unit_tests'
+      run: |
+        echo "Running Unit Tests!!!!"
+        sleep 5
+        echo "Unit Tests Passed!"
+        
+  
