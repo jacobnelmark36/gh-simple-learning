@@ -1,0 +1,39 @@
+name: GitHub Actions Demo - Expressions
+
+on:
+  push:
+    branches: [ expressions ]
+  pull_request:
+    branches: 
+      - 'express**'
+
+jobs:
+  Run-Job-Only-On-Push:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+         echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+         echo "🍏 This job's status is ${{ job.status }}."
+
+  Run-Job-Only-On-PR:
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+         echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+         echo "🍏 This job's status is ${{ job.status }}."
+
+  Run-Job-Always:
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Run Step only on Push'
+        if: ${{ github.event_name == 'push' }}
+        run: |
+         echo "Triggered by PUSH!"
+
+      - name: 'Run Step only on Pull Request'
+        if: ${{ github.event_name == 'pull_request' }}
+        run: |
+         echo "Triggered by PR!"
