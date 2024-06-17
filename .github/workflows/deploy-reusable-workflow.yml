@@ -31,7 +31,7 @@ jobs:
           echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $env:RUNNER_OS OS VM"
 
       - name: 'DEV SMOKE TEST'
-        if: ${{ vars.RUN_SMOKE_TESTS }}
+        if: ${{ vars.RUN_SMOKE_TESTS == 'true' }}
         run: |
           echo "Running Smoke Tests..."
 
@@ -46,7 +46,7 @@ jobs:
           echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $RUNNER_OS OS VM"
 
       - name: 'UAT SMOKE TEST'
-        if: ${{ inputs.RUN_SMOKE_TESTS }}
+        if: ${{ vars.RUN_SMOKE_TESTS == 'true' }}
         run: |
           echo "Running Smoke Tests..."
 
