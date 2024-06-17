@@ -5,24 +5,24 @@ on:
         required: true
         description: 'Application Name'
         type: string
-      APP_VERSION:
+      DEV_RUNNER:
         required: false
-        description: 'Application Version'
+        description: 'DEV Github Runner'
+        default: 'windows-latest'
         type: string
-      RUN_DEV_SMOKE_TESTS:
-        required: false
-        description: 'Run DEV Environment Smoke Tests'
-        default: false
-        type: boolean
-      RUN_UAT_SMOKE_TESTS:
+      UAT_RUNNER:
         required: true
-        description: 'Run UAT Environment Smoke Tests'
-        type: boolean
+        description: 'UAT Github Runner'
+        type: string
+      PROD_RUNNER:
+        required: true
+        description: 'PROD Github Runner'
+        type: string
 
 jobs:
 
   DEV:
-    runs-on: ${{ vars.RUNNER }}
+    runs-on: ${{ inputs.DEV_RUNNER }}
     environment: DEV
 
     steps:
@@ -31,12 +31,12 @@ jobs:
           echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $env:RUNNER_OS OS VM"
 
       - name: 'DEV SMOKE TEST'
-        if: ${{ inputs.RUN_DEV_SMOKE_TESTS }}
+        if: ${{ vars.RUN_SMOKE_TESTS }}
         run: |
           echo "Running Smoke Tests..."
 
   UAT:
-    runs-on: ${{ vars.RUNNER }}
+    runs-on: ${{ inputs.UAT_RUNNER }}
     needs: DEV
     environment: UAT
 
@@ -46,12 +46,12 @@ jobs:
           echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $RUNNER_OS OS VM"
 
       - name: 'UAT SMOKE TEST'
-        if: ${{ inputs.RUN_UAT_SMOKE_TESTS }}
+        if: ${{ inputs.RUN_SMOKE_TESTS }}
         run: |
           echo "Running Smoke Tests..."
 
   PROD:
-    runs-on: ${{ vars.RUNNER }}
+    runs-on: ${{ inputs.PROD_RUNNER }}
     needs: UAT
     environment: PROD
 

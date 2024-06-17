@@ -10,5 +10,5 @@ jobs:
     uses: jacobnelmark36/gh-simple-learning/.github/workflows/deploy-reusable-workflow.yml@deployments
     with:
       APP_NAME: 'linux-app'
-      APP_VERSION: '0.0.1'
-      RUN_UAT_SMOKE_TESTS: true
+      UAT_RUNNER: 'macos-latest'
+      PROD_RUNNER: 'ubuntu-latest'
