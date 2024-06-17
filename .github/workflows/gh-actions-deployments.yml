@@ -1,0 +1,14 @@
+name: GitHub Actions Demo - Deployments
+
+on:
+  push:
+    branches: [ deployments ]
+
+jobs:
+
+  Deploy:
+    uses: jacobnelmark36/gh-simple-learning/.github/workflows/deploy-reusable-workflow.yml@deployments
+    with:
+      APP_NAME: 'linux-app'
+      APP_VERSION: '0.0.1'
+      RUN_UAT_SMOKE_TESTS: true

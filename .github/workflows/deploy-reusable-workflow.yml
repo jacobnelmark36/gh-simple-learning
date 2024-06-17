@@ -1,0 +1,61 @@
+on:
+  workflow_call:
+    inputs:
+      APP_NAME:
+        required: true
+        description: 'Application Name'
+        type: string
+      APP_VERSION:
+        required: false
+        description: 'Application Version'
+        type: string
+      RUN_DEV_SMOKE_TESTS:
+        required: false
+        description: 'Run DEV Environment Smoke Tests'
+        default: false
+        type: boolean
+      RUN_UAT_SMOKE_TESTS:
+        required: true
+        description: 'Run UAT Environment Smoke Tests'
+        type: boolean
+
+jobs:
+
+  DEV:
+    runs-on: ${{ vars.RUNNER }}
+    environment: DEV
+
+    steps:
+      - name: 'DEV Deployment - ${{ runner.os }}'
+        run: |
+          echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $env:RUNNER_OS OS VM"
+
+      - name: 'DEV SMOKE TEST'
+        if: ${{ inputs.RUN_DEV_SMOKE_TESTS }}
+        run: |
+          echo "Running Smoke Tests..."
+
+  UAT:
+    runs-on: ${{ vars.RUNNER }}
+    needs: DEV
+    environment: UAT
+
+    steps:
+      - name: 'UAT Deployment - ${{ runner.os }}'
+        run: |
+          echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $RUNNER_OS OS VM"
+
+      - name: 'UAT SMOKE TEST'
+        if: ${{ inputs.RUN_UAT_SMOKE_TESTS }}
+        run: |
+          echo "Running Smoke Tests..."
+
+  PROD:
+    runs-on: ${{ vars.RUNNER }}
+    needs: UAT
+    environment: PROD
+
+    steps:
+      - name: 'PROD Deployment - ${{ runner.os }}'
+        run: |
+          echo "Deploying to ${{ vars.CLOUD_PLATFORM }} on $RUNNER_OS OS VM"
